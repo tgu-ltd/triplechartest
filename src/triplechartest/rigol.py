@@ -1,3 +1,4 @@
+import os
 import time
 import pyvisa
 
@@ -26,7 +27,7 @@ class Rigol:
             raise RuntimeError("No IDN")
         self._connected = True
 
-    def __read_setup(self):
+    def _read_setup(self):
         with open(self._setup_bin_file, "wb") as f:
             binary = self._instrument.query_binary_values(":SYSTem:SETup?", datatype="B", container=bytes)
             f.write(binary)
@@ -34,9 +35,10 @@ class Rigol:
     def write_setup(self):
         """ Write the setup to the scope"""
         binary = None
-        with open(self._setup_bin_file, "rb") as f:
-            binary = f.read()
-        self._instrument.write_binary_values(":SYSTem:SETup", binary, datatype="B")
+        if os.path.exists(self._setup_bin_file):
+            with open(self._setup_bin_file, "rb") as f:
+                binary = f.read()
+            self._instrument.write_binary_values(":SYSTem:SETup", binary, datatype="B")
     
     def disconnect(self) -> None:
         """ Disconnect from the scope """

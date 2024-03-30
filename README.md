@@ -22,6 +22,12 @@ T2 <---- USB Cam OCR   |
 T3 <- Serial Device----|<- Silicon Labs CP210x UART Bridge
 ```
 
+## Hardware Used
+
+* Rigol 1054z Oscilloscope
+* 2 x Silicon Labs CP210x UART Bridge
+* Logitech USB C Web Cam
+
 ## Packages Used
 
 * opencv-python
@@ -59,4 +65,17 @@ $ pytest
 ![Event Table](https://www.tgu-ltd.uk/img/tripple_char_test_rigol_event_table.png)
 
 ## Camera Character Capture
+
 ![Character Capture](https://www.tgu-ltd.uk/img/triplechartest_character_capture.png)
+
+## Files Read and Written
+
+Three files are written during the tests:
+
+1. `main.png` is a image of the webcam
+2. `test.png` is a captured region of the webcam image
+3. `screen.png` is a screen shot loaded from the rigol scope
+
+One file is read during the tests:
+
+1. `rigol_setup.bin` is used to setup the rigol 1054z. This file can be generated using the `Rigol(ip=x.x.x.x)._read_setup()` after manually setting up the scope.
